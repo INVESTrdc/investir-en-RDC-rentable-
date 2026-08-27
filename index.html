@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0085f7">
+<title>INVEST RDC - Plateforme Officielle d'Investissement</title>
+<style>
+:root{
+ --blue:#0085f7;--blue-light:rgba(0,133,247,.08);--red:#ce1126;--yellow:#f7d618;
+ --dark:#0d1b2a;--muted:#5c6b73;--white:rgba(255,255,255,.98);
+ --line:rgba(220,232,240,.8);--shadow:0 8px 30px rgba(13,27,42,.08);
+ --gradient-primary:linear-gradient(135deg, #0085f7 0%, #005bb5 100%);
+}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ min-height:100vh;
+ background: 
+  linear-gradient(135deg, 
+   rgba(0, 133, 247, 0.90) 0%, 
+   rgba(0, 133, 247, 0.82) 42%, 
+   rgba(247, 214, 24, 0.20) 46%, 
+   rgba(206, 17, 38, 0.18) 49%, 
+   rgba(206, 17, 38, 0.18) 52%, 
+   rgba(247, 214, 24, 0.20) 55%, 
+   rgba(0, 133, 247, 0.82) 59%, 
+   rgba(0, 133, 247, 0.92) 100%
+  ),
+  radial-gradient(circle at 15% 15%, rgba(247, 214, 24, 0.3) 0%, transparent 45%),
+  radial-gradient(circle at 85% 85%, rgba(206, 17, 38, 0.22) 0%, transparent 45%);
+ background-attachment: fixed;
+ font-family: 'Segoe UI', Arial, sans-serif;
+ color: var(--dark);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer; transition: transform 0.15s ease, opacity 0.15s ease;}
+button:active{transform:scale(0.98)}
+button:disabled{opacity: 0.6; cursor: not-allowed; transform: none !important;}
+.hidden{display:none!important}
+.screen{min-height:100vh; display:flex; justify-content:center; align-items:center; padding:20px;}
+.auth-card{width:100%;max-width:460px;background:var(--white);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.9);border-radius:24px;padding:30px;box-shadow:var(--shadow)}
+.logo{height:90px;border-radius:18px;background:linear-gradient(135deg, rgba(0,133,247,.08), rgba(247,214,24,.12));display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:var(--blue);border:1px solid rgba(0,133,247,.12)}
+.logo b{color:var(--red)}.star{color:var(--yellow);margin-right:6px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.1))}
+.brand{text-align:center}.brand h1{font-size:24px;margin:16px 0 6px;color:var(--blue)}
+.brand p{margin:0 0 22px;color:var(--muted);letter-spacing:1px;font-weight:800;font-size:11.5px}
+
+label{display:block;margin:14px 0 6px;font-weight:800;font-size:12.5px;color:var(--dark)}
+input,select,textarea{width:100%;padding:13px 15px;border:1.5px solid var(--line);border-radius:12px;outline:0;background:rgba(255,255,255,.95);transition:all .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,133,247,.12);background:#fff}
+.primary{width:100%;padding:15px;border:0;border-radius:12px;background:var(--gradient-primary);color:#fff;font-weight:900;margin-top:20px;box-shadow:0 6px 20px rgba(0,133,247,.3);letter-spacing:.5px}
+.link-btn{background:none;border:0;color:var(--blue);font-weight:bold;margin-top:14px;width:100%;text-align:center;display:block;cursor:pointer;font-size:13.5px}
+
+.welcome{position:fixed;inset:0;background:rgba(13,27,42,.78);backdrop-filter:blur(8px);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.welcome-box{background:rgba(255,255,255,.99);backdrop-filter:blur(16px);max-width:440px;width:100%;border-radius:24px;padding:30px;text-align:center;box-shadow:0 25px 70px rgba(0,0,0,.3)}
+.welcome-box .emoji{font-size:50px;margin-bottom:10px}.welcome-box h2{color:var(--blue);font-size:24px;margin-bottom:10px}
+.welcome-box p{font-size:13.5px;line-height:1.6;color:var(--muted);text-align:left;margin:10px 0}
+
+.dashboard{display:none;min-height:100vh;padding-bottom:90px}.dashboard.active{display:block}
+.top{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);box-shadow:0 4px 20px rgba(0,0,0,.04)}
+.top-logo{font-size:20px;font-weight:900;color:var(--blue)}.top-logo b{color:var(--red)}
+.container{max-width:900px;margin:auto;padding:18px}
+
+.hero{background:var(--gradient-primary);color:#fff;border-radius:20px;padding:22px;position:relative;overflow:hidden;box-shadow:0 10px 25px rgba(0,133,247,.25)}
+.hero:after{content:"★";position:absolute;right:15px;top:-40px;font-size:150px;color:rgba(247,214,24,.1);pointer-events:none}
+.hero h1,.hero p{position:relative;z-index:1}.hero h1{margin:0 0 6px;font-size:22px}.hero p{line-height:1.5;margin:0;font-size:13.5px;opacity:.92}
+
+.balance{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:16px 0}
+.card{background:var(--white);border:1px solid rgba(255,255,255,.9);border-radius:16px;padding:16px;box-shadow:var(--shadow)}
+.card small{color:var(--muted);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px}
+.card strong{display:block;font-size:21px;margin-top:6px;color:var(--dark)}
+
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:16px 0}
+.action{border:0;border-radius:14px;padding:16px 12px;background:var(--white);border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow);text-align:center;font-weight:bold;color:var(--dark);font-size:13.5px;transition:all .2s}
+.action:hover{border-color:var(--blue);transform:translateY(-2px)}
+.action span{display:block;font-size:26px;margin-bottom:6px}
+.action.red{border-top:4px solid var(--red)}
+.action.yellow{border-top:4px solid var(--yellow)}
+
+.section{background:var(--white);border:1px solid rgba(255,255,255,.9);border-radius:20px;padding:20px;margin-top:16px;box-shadow:var(--shadow)}
+.section h2{margin-top:0;color:var(--blue);font-size:19px;display:flex;align-items:center;gap:8px}
+
+.plan{border:1.5px solid var(--line);border-radius:16px;padding:16px;margin:14px 0;background:rgba(255,255,255,.98);transition:all .2s ease;box-shadow:0 4px 15px rgba(0,0,0,.02)}
+.plan:hover{border-color:var(--blue);box-shadow:0 8px 22px rgba(0,133,247,.12);transform:translateY(-2px)}
+.plan-top-row{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.plan-thumb{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg, rgba(0,133,247,.1), rgba(0,133,247,.2));display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(0,133,247,.15);overflow:hidden;}
+.plan-thumb img{width:100%;height:100%;object-fit:cover;border-radius:13px;display:block;}
+.plan-content{flex-grow:1}
+.plan-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:4px}
+.badge{background:var(--blue-light);color:var(--blue);padding:4px 10px;border-radius:12px;font-size:11.5px;font-weight:900}
+.plan-obj{margin:0;font-size:13px;color:var(--muted)}
+
+.plan-metrics{background:rgba(240,246,252,.7);border:1px solid rgba(0,133,247,.08);border-radius:12px;padding:10px 12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center;margin:12px 0;font-size:12px;}
+.metric-item small{display:block;color:var(--muted);font-weight:700;text-transform:uppercase;font-size:10px}
+.metric-item strong{color:var(--dark);font-size:12.5px;font-weight:800}
+.metric-item strong.highlight{color:#108850}
+
+.invest-btn{width:100%;padding:12px;border:0;border-radius:12px;background:var(--gradient-primary);color:#fff;font-weight:900;font-size:13px;box-shadow:0 4px 15px rgba(0,133,247,.25);cursor:pointer;}
+
+.team-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line);}
+.team-table th,.team-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);}
+.team-table th{background:var(--blue-light);color:var(--blue);font-weight:800;font-size:12px;text-transform:uppercase;}
+.team-table tr:last-child td{border-bottom:none;}
+
+.profile-accordion{background:var(--white);border:1.5px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden;box-shadow:var(--shadow);transition:all .2s ease;}
+.profile-accordion-header{padding:14px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-weight:800;font-size:14px;color:var(--dark);background:rgba(255,255,255,.98);user-select:none;}
+.profile-accordion-header:hover{background:var(--blue-light);color:var(--blue);}
+.profile-accordion-header .arrow{font-size:13px;transition:transform 0.3s ease;color:var(--muted);font-weight:900;}
+.profile-accordion.active .profile-accordion-header .arrow{transform:rotate(180deg);color:var(--blue);}
+.profile-accordion-content{max-height:0;overflow:hidden;transition:max-height 0.3s ease, padding 0.3s ease;padding:0 18px;background:rgba(245,248,252,.6);}
+.profile-accordion.active .profile-accordion-content{max-height:600px;padding:14px 18px;border-top:1px solid var(--line);overflow-y:auto;}
+
+.clean-tx-list{display:flex;flex-direction:column;gap:10px;}
+.clean-tx-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.02);}
+.clean-tx-info h4{margin:0 0 2px;font-size:13.5px;color:var(--dark);font-weight:800;}
+.clean-tx-info small{color:var(--muted);font-size:11.5px;font-weight:600;}
+.clean-tx-right{text-align:right;}
+.clean-tx-amount{font-weight:900;font-size:14px;display:block;margin-bottom:2px;}
+.clean-tx-amount.positive{color:#108850;}
+.clean-tx-amount.negative{color:var(--red);}
+.clean-tx-amount.neutral{color:var(--blue);}
+
+.floating-socials{position:fixed;bottom:75px;right:20px;z-index:30;display:flex;flex-direction:column;gap:10px;}
+.social-float-btn{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,0.2);color:#fff;text-decoration:none;border:none;cursor:pointer;transition:transform 0.2s;}
+.social-float-btn:hover{transform:scale(1.08);}
+.whatsapp-float{background:#25d366;}
+.telegram-float{background:#0088cc;}
+
+.info{background:rgba(240,246,252,.9);border-radius:14px;padding:14px;line-height:1.5;margin-top:12px;font-size:13px;border:1px solid rgba(0,133,247,.08)}
+.success{color:#108850;font-weight:900}
+.danger{color:var(--red);font-weight:900}
+.pending{color:#d97706;font-weight:900}
+
+.bottom{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);z-index:15;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);box-shadow:0 -6px 25px rgba(0,0,0,.05)}
+.bottom button{border:0;background:transparent;padding:10px 4px;color:var(--muted);font-size:11.5px;font-weight:800;transition:all .2s}
+.bottom button span{display:block;font-size:22px;margin-bottom:3px}
+.bottom button.active{color:var(--blue)}
+
+.profile-line{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;font-size:13.5px}
+.logout{width:100%;padding:15px;border:0;border-radius:14px;background:rgba(255,240,241,.9);color:var(--red);font-weight:900;margin-top:20px;box-shadow:0 4px 15px rgba(206,17,38,.12)}
+.copy-box{display:flex;gap:8px;margin-top:8px}
+.copy-box input{background:rgba(240,246,252,.9);font-weight:700}
+.copy-btn{background:var(--blue);color:#fff;border:0;border-radius:10px;padding:0 16px;font-weight:bold;box-shadow:0 4px 12px rgba(0,133,247,0.2)}
+</style>
+</head>
+<body>
+
+<!-- PAGE DE CONNEXION -->
+<section id="loginScreen" class="screen">
+ <div class="auth-card">
+  <div class="logo"><span class="star">★</span>INVEST <b>RDC</b></div>
+  <div class="brand">
+   <h1>Connexion Sécurisée</h1>
+   <p>VOTRE PARTENAIRE FINANCIER DE CONFIANCE</p>
+  </div>
+  <label>Numéro de téléphone</label>
+  <input id="loginPhone" type="tel" placeholder="09XXXXXXXX">
+  <label>Mot de passe</label>
+  <input id="loginPass" type="password" placeholder="••••••">
+  <button class="primary" onclick="loginWithFirebase(this)">Se connecter à mon compte</button>
+  <button class="link-btn" onclick="showScreen('forgotScreen')" style="color:var(--muted); font-size:12.5px; margin-top:10px;">Mot de passe oublié ?</button>
+  <button class="link-btn" onclick="showScreen('registerScreen')">Nouveau sur INVEST RDC ? Créer un compte</button>
+ </div>
+</section>
+
+<!-- PAGE D'INSCRIPTION -->
+<section id="registerScreen" class="screen hidden">
+ <div class="auth-card">
+  <div class="logo"><span class="star">★</span>INVEST <b>RDC</b></div>
+  <div class="brand">
+   <h1>Inscription Officielle</h1>
+   <p>REJOIGNEZ NOTRE COMMUNAUTÉ (+500 FC DE BONUS)</p>
+  </div>
+  <label>Numéro de téléphone</label>
+  <input id="regPhone" type="tel" placeholder="09XXXXXXXX">
+  <label>Mot de passe</label>
+  <input id="regPass" type="password" placeholder="Minimum 6 caractères">
+  <label>Confirmer le mot de passe</label>
+  <input id="regPassConfirm" type="password" placeholder="Répétez le mot de passe">
+  
+  <label>Question secrète *</label>
+  <select id="regSecretQuestion">
+   <option>Quel est le nom de votre première école ?</option>
+   <option>Nom de votre animal préféré ?</option>
+   <option>Ville de naissance ?</option>
+   <option>Nom de votre mère ?</option>
+  </select>
+
+  <label>Réponse secrète *</label>
+  <input id="regSecretAnswer" type="text" placeholder="Votre réponse">
+
+  <label>Code de parrainage (Sécurisé & Verrouillé)</label>
+  <input id="regRef" type="text" placeholder="Code de parrain valide (optionnel)">
+  <button class="primary" onclick="registerWithFirebase(this)">Valider mon inscription</button>
+  <button class="link-btn" onclick="showScreen('loginScreen')">Déjà inscrit ? Se connecter</button>
+ </div>
+</section>
+
+<!-- PAGE MOT DE PASSE OUBLIÉ -->
+<section id="forgotScreen" class="screen hidden">
+ <div class="auth-card">
+  <div class="logo"><span class="star">★</span>INVEST <b>RDC</b></div>
+  <div class="brand">
+   <h1>Récupération</h1>
+   <p>MOT DE PASSE OUBLIÉ</p>
+  </div>
+  
+  <div id="forgotStep1">
+   <label>Numéro de téléphone</label>
+   <input id="forgotPhone" type="tel" placeholder="09XXXXXXXX">
+   <button class="primary" onclick="findSecretQuestion()">Suivant</button>
+  </div>
+
+  <div id="forgotStep2" class="hidden">
+   <label>Question secrète enregistrée</label>
+   <input id="forgotDisplayQuestion" type="text" readonly style="background:rgba(240,246,252,.9); font-weight:700;">
+   
+   <label>Votre réponse secrète</label>
+   <input id="forgotAnswer" type="text" placeholder="Entrez votre réponse">
+   
+   <label>Nouveau mot de passe</label>
+   <input id="forgotNewPass" type="password" placeholder="Min. 6 caractères">
+   
+   <button class="primary" onclick="resetPasswordWithSecret()">Réinitialiser le mot de passe</button>
+  </div>
+
+  <button class="link-btn" onclick="showScreen('loginScreen')">Retour à la connexion</button>
+ </div>
+</section>
+
+<!-- PAGE DE BIENVENUE -->
+<div id="welcome" class="welcome hidden">
+ <div class="welcome-box">
+  <div class="emoji">🚀</div>
+  <h2>Félicitations et Bienvenue !</h2>
+  <p>Votre compte officiel <b>INVEST RDC</b> a été créé avec succès. Un <b>bonus de bienvenue de 500 FC</b> a été crédité sur votre solde !</p>
+  <button class="primary" onclick="enterDashboard()">Accéder à mon tableau de bord</button>
+ </div>
+</div>
+
+<!-- TABLEAU DE BORD PRINCIPAL -->
+<section id="dashboard" class="dashboard">
+ <header class="top">
+  <div class="top-logo">INVEST <b>RDC</b></div>
+  <div style="display:flex; align-items:center; gap:8px;">
+   <a id="adminLinkBtn" href="admin.html" class="hidden" style="background:#8b5cf6; color:#fff; padding:6px 12px; border-radius:12px; font-weight:900; font-size:12px; text-decoration:none;">👑 Panel Admin</a>
+   <div style="font-weight:900; color:var(--blue); font-size:13px; background:var(--blue-light); padding:5px 10px; border-radius:15px;" id="topPhoneDisplay">--</div>
+  </div>
+ </header>
+
+ <!-- BOUTONS FLOTTANTS RÉSEAUX SOCIAUX -->
+ <div class="floating-socials">
+  <a href="https://chat.whatsapp.com/LPnwKCJZW6x5Uf6mqg2HY3" target="_blank" class="social-float-btn whatsapp-float" title="WhatsApp">
+   <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></path></svg>
+  </a>
+  <a href="https://t.me/+ajC6lueHGfA1YjI0" target="_blank" class="social-float-btn telegram-float" title="Telegram">
+   <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.14-.26.26-.534.26l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.121l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.534-.195 1.001.132.834 1.043z"/></path></svg>
+  </a>
+ </div>
+
+ <!-- ONGLET ACCUEIL -->
+ <main id="viewAccueil" class="container main-view">
+  <div class="hero">
+   <h1>Plateforme d'Investissement 🇨🇩</h1>
+   <p>Bâtissez votre avenir financier en toute sérénité grâce à nos portefeuilles d'actifs sécurisés. Vos gains augmentent automatiquement toutes les 24 heures !</p>
+  </div>
+
+  <div class="balance">
+   <div class="card"><small>Solde disponible</small><strong id="balance">0 FC</strong></div>
+   <div class="card"><small>Total investi</small><strong id="totalInvested">0 FC</strong></div>
+  </div>
+
+  <div class="actions">
+   <button class="action red" onclick="switchTab('withdraw')"><span>💸</span>Effectuer un Retrait</button>
+   <button class="action yellow" onclick="scrollToPlans()"><span>📊</span>Explorer les Opportunités</button>
+  </div>
+
+  <!-- Plans d'investissement -->
+  <div class="section" id="plansSection">
+   <h2>📊 Plans d'investissement (Cycle 365 Jours)</h2>
+   <p style="color:var(--muted); font-size:13px; margin-bottom:14px;">Sélectionnez un pack adapté à vos objectifs. <i>Note : Les Niveaux 1 et 2 ne peuvent être achetés qu'une seule fois.</i></p>
+   
+   <!-- Plan 1 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=150&q=80" alt="Réfrigérateur"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>MicroEssentials® VIP 1</b><span class="badge">6 000 FC (1x max)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Réfrigérateur 1 porte</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">1 680 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">613 200 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Réfrigérateur 1 porte (MicroEssentials® VIP 1)', 6000, 1680, '365 jours', '28% (Gain quotidien : 1 680 FC)', 'Réfrigérateur 1 porte. Limité à 1 seul achat par utilisateur.', 'Total à gagner estimé : 613 200 FC.')">Investir (6 000 FC)</button>
+   </div>
+
+   <!-- Plan 2 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?auto=format&fit=crop&w=150&q=80" alt="Machine à laver"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>MicroEssentials® VIP 2</b><span class="badge">12 000 FC (1x max)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Machine à laver automatique</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">3 480 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">1 270 200 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Machine à laver automatique (MicroEssentials® VIP 2)', 12000, 3480, '365 jours', '29% (Gain quotidien : 3 480 FC)', 'Machine à laver automatique. Limité à 1 seul achat par utilisateur.', 'Total à gagner estimé : 1 270 200 FC.')">Investir (12 000 FC)</button>
+   </div>
+
+   <!-- Plan 3 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1574269909862-7e1d70bb8078?auto=format&fit=crop&w=150&q=80" alt="Micro-ondes"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>MicroEssentials® VIP 3</b><span class="badge">24 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Micro-ondes multifonction</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">7 200 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">2 628 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Micro-ondes multifonction (MicroEssentials® VIP 3)', 24000, 7200, '365 jours', '30% (Gain quotidien : 7 200 FC)', 'Micro-ondes multifonction. Achat illimité.', 'Total à gagner estimé : 2 628 000 FC.')">Investir (24 000 FC)</button>
+   </div>
+
+   <!-- Plan 4 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=150&q=80" alt="Cuisinière"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Pegasus® VIP 1</b><span class="badge">50 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Cuisinière à gaz 4 feux + four</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">16 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">5 840 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Cuisinière à gaz 4 feux + four (Pegasus® VIP 1)', 50000, 16000, '365 jours', '32% (Gain quotidien : 16 000 FC)', 'Cuisinière à gaz 4 feux + four. Achat illimité.', 'Total à gagner estimé : 5 840 000 FC.')">Investir (50 000 FC)</button>
+   </div>
+
+   <!-- Plan 5 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1593784991095-a205069470b6?auto=format&fit=crop&w=150&q=80" alt="Smart TV"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Pegasus® VIP 2</b><span class="badge">100 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Téléviseur Smart TV 43"</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">34 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">12 410 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Téléviseur Smart TV 43 pouces (Pegasus® VIP 2)', 100000, 34000, '365 jours', '34% (Gain quotidien : 34 000 FC)', 'Téléviseur Smart TV 43\". Achat illimité.', 'Total à gagner estimé : 12 410 000 FC.')">Investir (100 000 FC)</button>
+   </div>
+
+   <!-- Plan 6 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=150&q=80" alt="Canapé"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Pegasus® VIP 3</b><span class="badge">200 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Canapé 7 places</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">72 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">26 280 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Canapé 7 places (Pegasus® VIP 3)', 200000, 72000, '365 jours', '36% (Gain quotidien : 72 000 FC)', 'Canapé 7 places. Achat illimité.', 'Total à gagner estimé : 26 280 000 FC.')">Investir (200 000 FC)</button>
+   </div>
+
+   <!-- Plan 7 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1570222094114-d074f3e95e5d?auto=format&fit=crop&w=150&q=80" alt="Blender"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Aspire® VIP 1</b><span class="badge">500 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Blender professionnel</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">195 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">71 175 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Blender professionnel (Aspire® VIP 1)', 500000, 195000, '365 jours', '39% (Gain quotidien : 195 000 FC)', 'Blender professionnel. Achat illimité.', 'Total à gagner estimé : 71 175 000 FC.')">Investir (500 000 FC)</button>
+   </div>
+
+   <!-- Plan 8 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1540518614846-7ede433c4ef0?auto=format&fit=crop&w=150&q=80" alt="Chambre à coucher"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Aspire® VIP 2</b><span class="badge">1 000 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Chambre à coucher complète</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">420 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">153 300 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Chambre à coucher complète (Aspire® VIP 2)', 1000000, 420000, '365 jours', '42% (Gain quotidien : 420 000 FC)', 'Chambre à coucher complète. Achat illimité.', 'Total à gagner estimé : 153 300 000 FC.')">Investir (1 000 000 FC)</button>
+   </div>
+
+   <!-- Plan 9 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1615066390971-03e4e1c36ddf?auto=format&fit=crop&w=150&q=80" alt="Salle à manger"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Aspire® VIP 3</b><span class="badge">1 500 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Salle à manger 6 places</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">675 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">246 375 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Salle à manger 6 places (Aspire® VIP 3)', 1500000, 675000, '365 jours', '45% (Gain quotidien : 675 000 FC)', 'Salle à manger 6 places. Achat illimité.', 'Total à gagner estimé : 246 375 000 FC.')">Investir (1 500 000 FC)</button>
+   </div>
+
+   <!-- Plan 10 -->
+   <div class="plan">
+    <div class="plan-top-row">
+     <div class="plan-thumb"><img src="https://images.unsplash.com/photo-1631545706212-2f22e92c2079?auto=format&fit=crop&w=150&q=80" alt="Climatiseur"></div>
+     <div class="plan-content">
+      <div class="plan-head"><b>Aspire® VIP 4</b><span class="badge">2 000 000 FC (Illimité)</span></div>
+      <p class="plan-obj"><b>Produit :</b> Climatiseur 1.5 CV + installation</p>
+     </div>
+    </div>
+    <div class="plan-metrics">
+     <div class="metric-item"><small>Cycle</small><strong>365 Jours</strong></div>
+     <div class="metric-item"><small>Gain Quotidien</small><strong class="highlight">960 000 FC</strong></div>
+     <div class="metric-item"><small>Total Estimé</small><strong class="highlight">350 400 000 FC</strong></div>
+    </div>
+    <button class="invest-btn" onclick="openPlanDetail('Climatiseur 1.5 CV + installation (Aspire® VIP 4)', 2000000, 960000, '365 jours', '48% (Gain quotidien : 960 000 FC)', 'Climatiseur 1.5 CV + installation. Achat illimité.', 'Total à gagner estimé : 350 400 000 FC.')">Investir (2 000 000 FC)</button>
+   </div>
+
+   <div class="info" style="margin-top:14px;">🛡️ Vos gains s'accumulent et augmentent automatiquement toutes les 24 heures sur votre solde disponible.</div>
+  </div>
+ </main>
+
+ <!-- PAGE DÉTAILS DU PLAN -->
+ <main id="viewPlanDetail" class="container main-view hidden">
+  <div style="margin-bottom:14px;">
+   <button class="link-btn" onclick="switchTab('accueil')" style="text-align:left; width:auto; font-weight:800; display:flex; align-items:center; gap:6px;">← Retour aux plans</button>
+  </div>
+  <div class="section">
+   <h2 id="modalPlanName">Détails de l'actif</h2>
+   <div class="info" style="margin-top:14px;">
+    <p><b>Capital d'investissement :</b> <span id="modalPlanAmount">--</span></p>
+    <p><b>Période de cycle :</b> <span id="modalPlanDuration">--</span></p>
+    <p><b>Rendement quotidien :</b> <span id="modalPlanReturn">--</span></p>
+    <p><b>Spécifications du produit :</b> <span id="modalPlanConditions">--</span></p>
+    <p><b>Projection des gains :</b> <span class="success" id="modalPlanRisks">--</span></p>
+   </div>
+   <button id="btnSubmitPlan" class="primary" onclick="proceedToDeposit()" style="margin-top:20px;">Confirmer et procéder au dépôt</button>
+  </div>
+ </main>
+
+ <!-- PAGE DÉPÔT -->
+ <main id="viewDeposit" class="container main-view hidden">
+  <div style="margin-bottom:14px;">
+   <button class="link-btn" onclick="switchTab('planDetail')" style="text-align:left; width:auto; font-weight:800; display:flex; align-items:center; gap:6px;">← Retour aux détails</button>
+  </div>
+  <div class="section">
+   <h2>💳 Validation du Dépôt</h2>
+   <div class="info">
+    <p><b>Produit sélectionné :</b> <span id="depPlanName">--</span></p>
+    <p><b>Montant exact dû :</b> <span id="depAmount" class="success">--</span></p>
+    <p><b>Bénéficiaire officiel :</b> <strong style="color:var(--blue);">Landrine</strong></p>
+    <p><b>Numéro de versement :</b> <strong style="color:var(--blue); font-size:16px;">0965459468</strong></p>
+   </div>
+   
+   <button class="copy-btn" onclick="copyDepositNumber()" style="width:100%; margin-top:10px; padding:12px;">📋 Copier le numéro (Landrine)</button>
+
+   <div class="info" style="background:rgba(247,214,24,.12); border-left:4px solid var(--yellow); margin-top:12px;">
+    <b>Procédure de validation :</b><br>
+    Transférez le montant exact sur le compte de <b>Landrine (0965459468)</b>, puis remplissez le numéro de l'expéditeur et l'ID de transaction ci-dessous.
+   </div>
+
+   <label>📞 Votre numéro de téléphone (qui a envoyé l'argent) *</label>
+   <input type="tel" id="depSenderPhone" placeholder="09XXXXXXXX">
+
+   <label>🔢 Référence ou ID de transaction *</label>
+   <input type="text" id="depTxRef" placeholder="Ex. TX987654321">
+
+   <button id="btnConfirmDeposit" class="primary" onclick="confirmDeposit(this)">Soumettre pour validation</button>
+  </div>
+ </main>
+
+ <!-- PAGE RETRAIT -->
+ <main id="viewWithdraw" class="container main-view hidden">
+  <div style="margin-bottom:14px;">
+   <button class="link-btn" onclick="switchTab('accueil')" style="text-align:left; width:auto; font-weight:800; display:flex; align-items:center; gap:6px;">← Retour à l'accueil</button>
+  </div>
+  <div class="section">
+   <h2>💸 Demande de Retrait</h2>
+   <div class="info" style="background:rgba(0,133,247,.08); border-left:4px solid var(--blue); margin-bottom:12px;">
+    ℹ️ <b>Conditions de retrait :</b><br>
+    • Montant minimum : <b>3 500 FC</b><br>
+    • Frais de service : <b>7%</b><br>
+    • Disponibilité : <b>24h/24 et 7j/7</b>
+   </div>
+   <label>Opérateur</label>
+   <select id="withdrawOperator">
+    <option>Airtel Money</option>
+   </select>
+   <label>Numéro de téléphone de réception (Airtel)</label>
+   <input type="tel" id="withdrawPhone" placeholder="09XXXXXXXX">
+   <label>Montant à retirer (FC)</label>
+   <input id="withdrawAmount" type="number" min="3500" placeholder="Minimum 3500 FC">
+   <button id="btnDemoWithdraw" class="primary" onclick="demoWithdraw(this)">Lancer la demande de retrait</button>
+  </div>
+ </main>
+
+ <!-- ONGLET ÉQUIPE (AVEC LES TROIS TABLEAUX 33%, 5%, 1%) -->
+ <main id="viewEquipe" class="container main-view hidden">
+  <div class="hero" style="background:linear-gradient(135deg,rgba(13,27,42,.95),rgba(0,133,247,.95))">
+   <h1>Programme Partenaire & Réseau 👥</h1>
+   <p>Développez votre équipe sur 3 niveaux sécurisés et percevez des commissions exceptionnelles générées par vos filleuls.</p>
+  </div>
+
+  <div class="section">
+   <h2>🔗 Partagez votre opportunité</h2>
+   <label>Votre code de parrainage personnel</label>
+   <div class="copy-box">
+    <input id="refCodeDisplay" type="text" readonly value="RDC-8842">
+    <button class="copy-btn" onclick="copyRef()">Copier</button>
+   </div>
+   <label style="margin-top:10px;">Votre lien d'invitation direct</label>
+   <div class="copy-box">
+    <input id="refLinkDisplay" type="text" readonly value="https://investrdc.cd/ref?id=RDC-8842">
+    <button class="copy-btn" onclick="copyLink()">Copier</button>
+   </div>
+  </div>
+
+  <!-- Tableau 1 : Niveau 1 (33%) -->
+  <div class="section">
+   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <h2 style="margin:0; font-size:17px;">👥 Niveau 1 (Filleuls Directs)</h2>
+    <span class="badge">33%</span>
+   </div>
+   <p style="color:var(--muted); font-size:12.5px; margin:0 0 10px;">Membres inscrits : <b id="countN1">0</b> | Gains totaux : <span class="success" id="commN1">0 FC</span></p>
+   <table class="team-table">
+    <thead>
+     <tr>
+      <th>Téléphone</th>
+      <th>Date</th>
+      <th style="text-align:right;">Commission (33%)</th>
+     </tr>
+    </thead>
+    <tbody id="teamBodyN1">
+     <tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+  <!-- Tableau 2 : Niveau 2 (5%) -->
+  <div class="section">
+   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <h2 style="margin:0; font-size:17px;">👥 Niveau 2 (Filleuls de N1)</h2>
+    <span class="badge">5%</span>
+   </div>
+   <p style="color:var(--muted); font-size:12.5px; margin:0 0 10px;">Membres actifs : <b id="countN2">0</b> | Gains totaux : <span class="success" id="commN2">0 FC</span></p>
+   <table class="team-table">
+    <thead>
+     <tr>
+      <th>Téléphone</th>
+      <th>Date</th>
+      <th style="text-align:right;">Commission (5%)</th>
+     </tr>
+    </thead>
+    <tbody id="teamBodyN2">
+     <tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>
+    </tbody>
+   </table>
+  </div>
+
+  <!-- Tableau 3 : Niveau 3 (1%) -->
+  <div class="section">
+   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+    <h2 style="margin:0; font-size:17px;">👥 Niveau 3 (Filleuls de N2)</h2>
+    <span class="badge">1%</span>
+   </div>
+   <p style="color:var(--muted); font-size:12.5px; margin:0 0 10px;">Membres actifs : <b id="countN3">0</b> | Gains totaux : <span class="success" id="commN3">0 FC</span></p>
+   <table class="team-table">
+    <thead>
+     <tr>
+      <th>Téléphone</th>
+      <th>Date</th>
+      <th style="text-align:right;">Commission (1%)</th>
+     </tr>
+    </thead>
+    <tbody id="teamBodyN3">
+     <tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </main>
+
+ <!-- ONGLET PROFIL -->
+ <main id="viewProfil" class="container main-view hidden">
+  <div class="hero" style="background:linear-gradient(135deg,rgba(16,136,80,.95),rgba(0,133,247,.95))">
+   <h1>Espace Personnel & Historique 👤</h1>
+   <p>Suivez l'état de vos finances, vos transactions et gérez vos paramètres de compte en toute transparence.</p>
+  </div>
+
+  <div class="section">
+   <h2>Informations du compte</h2>
+   <div class="profile-line"><b>Téléphone mobile :</b> <span id="profilePhone">--</span></div>
+   <div class="profile-line"><b>Niveau de sécurité :</b> <span class="success">Compte certifié & sécurisé 🇨🇩</span></div>
+   <div class="profile-line"><b>Code parrain :</b> <span id="profileRefCode">--</span></div>
+   <div class="profile-line"><b>Parrain attribué :</b> <span id="profileReferredBy">Aucun</span></div>
+  </div>
+
+  <div class="profile-accordion">
+   <div class="profile-accordion-header" onclick="toggleProfileAccordion(this)">
+    <span>Historique des Dépôts & Bonus</span>
+    <span class="arrow">▼</span>
+   </div>
+   <div class="profile-accordion-content">
+    <div id="profileRecharges" class="clean-tx-list">Aucun dépôt répertorié.</div>
+   </div>
+  </div>
+
+  <div class="profile-accordion">
+   <div class="profile-accordion-header" onclick="toggleProfileAccordion(this)">
+    <span>Historique des Retraits</span>
+    <span class="arrow">▼</span>
+   </div>
+   <div class="profile-accordion-content">
+    <div id="profileWithdrawals" class="clean-tx-list">Aucun retrait répertorié.</div>
+   </div>
+  </div>
+
+  <div class="profile-accordion">
+   <div class="profile-accordion-header" onclick="toggleProfileAccordion(this)">
+    <span>Portefeuille d'Investissements</span>
+    <span class="arrow">▼</span>
+   </div>
+   <div class="profile-accordion-content">
+    <div id="profileInvestments" class="clean-tx-list">Aucun actif actif pour le moment.</div>
+   </div>
+  </div>
+
+  <button class="logout" onclick="logout()">Se déconnecter de la session</button>
+ </main>
+
+ <!-- NAVIGATION DU BAS -->
+ <nav class="bottom">
+  <button id="navAccueil" class="active" onclick="switchTab('accueil')"><span>🏠</span>Accueil</button>
+  <button id="navEquipe" onclick="switchTab('equipe')"><span>👥</span>Équipe (3 Niveaux)</button>
+  <button id="navProfil" onclick="switchTab('profil')"><span>👤</span>Mon Profil</button>
+ </nav>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_SAk06Yxk3RxybMw_wmIbbnf1uVkjEDE",
+    authDomain: "invest-rdc-dc876.firebaseapp.com",
+    projectId: "invest-rdc-dc876",
+    storageBucket: "invest-rdc-dc876.firebasestorage.app",
+    messagingSenderId: "772626561525",
+    appId: "1:772626561525:web:b89a210b244005c58cc8bc"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let selectedPlanData = { name: '', amount: 0, dailyGain: 0 };
+  let currentForgotPhone = '';
+
+  window.showScreen = function(screenId){
+   document.getElementById('loginScreen').classList.add('hidden');
+   document.getElementById('registerScreen').classList.add('hidden');
+   document.getElementById('forgotScreen').classList.add('hidden');
+   document.getElementById(screenId).classList.remove('hidden');
+  }
+
+  window.toggleProfileAccordion = function(headerElement) {
+   const parent = headerElement.parentElement;
+   parent.classList.toggle('active');
+  }
+
+  window.getUserData = function(){
+   let u = JSON.parse(localStorage.getItem('investRdcUser') || 'null');
+   if(!u){
+    u = { 
+      phone: '', 
+      name: '',
+      balance: 0, 
+      invested: 0, 
+      transactions: [], 
+      purchasedPlans: [], 
+      activeInvestments: [], 
+      teamN1: [], 
+      teamN2: [], 
+      teamN3: [],
+      referredBy: '',
+      isAdmin: false,
+      isActive: true,
+      myRefCode: ''
+    };
+   }
+   return u;
+  }
+
+  window.saveUserData = async function(u){
+   localStorage.setItem('investRdcUser', JSON.stringify(u));
+   if(u.phone){
+    try {
+      await setDoc(doc(db, "users", u.phone), u, { merge: true });
+    } catch(e) {
+      console.error("Erreur de sauvegarde Firestore :", e);
+    }
+   }
+  }
+
+  async function distributeCommissions(buyerUser, amount, planName) {
+    if(!buyerUser.referredBy) return;
+
+    try {
+      const q = query(collection(db, "users"), where("myRefCode", "==", buyerUser.referredBy));
+      const querySnapshot = await getDocs(q);
+      
+      if(!querySnapshot.empty) {
+        let p1Doc = querySnapshot.docs[0];
+        let p1Data = p1Doc.data();
+        let comm1 = Math.round(amount * 0.33);
+        p1Data.balance += comm1;
+        
+        let member1 = p1Data.teamN1.find(m => m.phone === buyerUser.phone);
+        if(member1) {
+          member1.comm = (member1.comm || 0) + comm1;
+        } else {
+          p1Data.teamN1.push({ phone: buyerUser.phone, comm: comm1, date: new Date().toLocaleDateString() });
+        }
+
+        p1Data.transactions.unshift({
+          type: `Commission N1 (33% - ${planName})`,
+          amount: comm1,
+          date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+          status: 'Approuvé'
+        });
+
+        await updateDoc(p1Doc.ref, {
+          balance: p1Data.balance,
+          teamN1: p1Data.teamN1,
+          transactions: p1Data.transactions
+        });
+
+        if(p1Data.referredBy) {
+          const q2 = query(collection(db, "users"), where("myRefCode", "==", p1Data.referredBy));
+          const qs2 = await getDocs(q2);
+          if(!qs2.empty) {
+            let p2Doc = qs2.docs[0];
+            let p2Data = p2Doc.data();
+            let comm2 = Math.round(amount * 0.05);
+            p2Data.balance += comm2;
+
+            let member2 = p2Data.teamN2.find(m => m.phone === buyerUser.phone);
+            if(member2) {
+              member2.comm = (member2.comm || 0) + comm2;
+            } else {
+              p2Data.teamN2.push({ phone: buyerUser.phone, comm: comm2, date: new Date().toLocaleDateString() });
+            }
+
+            p2Data.transactions.unshift({
+              type: `Commission N2 (5% - ${planName})`,
+              amount: comm2,
+              date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+              status: 'Approuvé'
+            });
+
+            await updateDoc(p2Doc.ref, {
+              balance: p2Data.balance,
+              teamN2: p2Data.teamN2,
+              transactions: p2Data.transactions
+            });
+
+            if(p2Data.referredBy) {
+              const q3 = query(collection(db, "users"), where("myRefCode", "==", p2Data.referredBy));
+              const qs3 = await getDocs(q3);
+              if(!qs3.empty) {
+                let p3Doc = qs3.docs[0];
+                let p3Data = p3Doc.data();
+                let comm3 = Math.round(amount * 0.01);
+                p3Data.balance += comm3;
+
+                let member3 = p3Data.teamN3.find(m => m.phone === buyerUser.phone);
+                if(member3) {
+                  member3.comm = (member3.comm || 0) + comm3;
+                } else {
+                  p3Data.teamN3.push({ phone: buyerUser.phone, comm: comm3, date: new Date().toLocaleDateString() });
+                }
+
+                p3Data.transactions.unshift({
+                  type: `Commission N3 (1% - ${planName})`,
+                  amount: comm3,
+                  date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+                  status: 'Approuvé'
+                });
+
+                await updateDoc(p3Doc.ref, {
+                  balance: p3Data.balance,
+                  teamN3: p3Data.teamN3,
+                  transactions: p3Data.transactions
+                });
+              }
+            }
+          }
+        }
+      }
+    } catch(e) {
+      console.error("Erreur distribution commissions :", e);
+    }
+  }
+
+  async function syncApprovedDeposits(){
+    let u = getUserData();
+    let updated = false;
+
+    u.transactions.forEach(tx => {
+      if(tx.type && tx.type.startsWith('Dépôt') && (tx.status === 'Approuvé' || tx.status === 'Succès') && !tx.activated){
+        tx.activated = true;
+        updated = true;
+        u.invested += tx.amount;
+
+        let planName = tx.planName || tx.type.replace('Dépôt (', '').replace(')', '');
+        let dailyGain = tx.dailyGain || Math.round(tx.amount * 0.34);
+
+        u.activeInvestments.push({
+          name: planName,
+          amount: tx.amount,
+          dailyGain: dailyGain,
+          startTime: Date.now(),
+          lastCheck: Date.now()
+        });
+
+        distributeCommissions(u, tx.amount, planName);
+      }
+    });
+
+    if(updated){
+      await saveUserData(u);
+    }
+  }
+
+  window.registerWithFirebase = async function(btn) {
+    const phone = document.getElementById('regPhone').value.trim();
+    const pass = document.getElementById('regPass').value;
+    const passConfirm = document.getElementById('regPassConfirm').value;
+    const secretQuestion = document.getElementById('regSecretQuestion').value;
+    const secretAnswer = document.getElementById('regSecretAnswer').value.trim();
+    const refCode = document.getElementById('regRef').value.trim();
+
+    if(!phone || phone.length < 9) { alert('Veuillez entrer un numéro de téléphone valide.'); return; }
+    if(!pass || pass.length < 6) { alert('Le mot de passe doit comporter au moins 6 caractères.'); return; }
+    if(pass !== passConfirm) { alert('Les mots de passe ne correspondent pas.'); return; }
+    if(!secretAnswer) { alert('Veuillez renseigner votre réponse secrète.'); return; }
+
+    if(refCode && refCode === phone) {
+      alert("Erreur de sécurité : Vous ne pouvez pas vous parrainer vous-même.");
+      return;
+    }
+
+    btn.disabled = true;
+
+    try {
+      const userDocRef = doc(db, "users", phone);
+      const userSnap = await getDoc(userDocRef);
+      if(userSnap.exists()) {
+        btn.disabled = false;
+        alert('Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.');
+        return;
+      }
+
+      let referrerRef = null;
+      if(refCode) {
+        const qRef = query(collection(db, "users"), where("myRefCode", "==", refCode));
+        const refSnap = await getDocs(qRef);
+        if(refSnap.empty) {
+          btn.disabled = false;
+          alert('Erreur : Le code de parrainage entré est invalide ou inexistant.');
+          return;
+        }
+        referrerRef = refSnap.docs[0];
+        if(referrerRef.id === phone) {
+          btn.disabled = false;
+          alert('Erreur de sécurité : Auto-parrainage interdit.');
+          return;
+        }
+      }
+
+      const fakeEmail = phone + "@investrdc.cd";
+      await createUserWithEmailAndPassword(auth, fakeEmail, pass);
+      
+      const generatedRefCode = 'RDC-' + Math.floor(1000 + Math.random() * 9000);
+
+      let u = { 
+        phone: phone, 
+        name: 'Membre ' + phone,
+        password: pass,
+        secretQuestion: secretQuestion,
+        secretAnswer: secretAnswer,
+        balance: 500, 
+        invested: 0, 
+        transactions: [{
+          type: 'Bonus de bienvenue',
+          amount: 500,
+          date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+          status: 'Approuvé'
+        }], 
+        purchasedPlans: [], 
+        activeInvestments: [], 
+        teamN1: [], 
+        teamN2: [], 
+        teamN3: [],
+        referredBy: refCode || '',
+        myRefCode: generatedRefCode,
+        isAdmin: false,
+        isActive: true
+      };
+
+      await setDoc(userDocRef, u);
+
+      if(referrerRef) {
+        let parentData = referrerRef.data();
+        if(!parentData.teamN1.some(m => m.phone === phone)) {
+          parentData.teamN1.push({ phone: phone, comm: 0, date: new Date().toLocaleDateString() });
+          await updateDoc(referrerRef.ref, { teamN1: parentData.teamN1 });
+        }
+
+        if(parentData.referredBy) {
+          const qRef2 = query(collection(db, "users"), where("myRefCode", "==", parentData.referredBy));
+          const refSnap2 = await getDocs(qRef2);
+          if(!refSnap2.empty) {
+            let gpDoc = refSnap2.docs[0];
+            let gpData = gpDoc.data();
+            if(!gpData.teamN2.some(m => m.phone === phone)) {
+              gpData.teamN2.push({ phone: phone, comm: 0, date: new Date().toLocaleDateString() });
+              await updateDoc(gpDoc.ref, { teamN2: gpData.teamN2 });
+            }
+
+            if(gpData.referredBy) {
+              const qRef3 = query(collection(db, "users"), where("myRefCode", "==", gpData.referredBy));
+              const refSnap3 = await getDocs(qRef3);
+              if(!refSnap3.empty) {
+                let ggpDoc = refSnap3.docs[0];
+                let ggpData = ggpDoc.data();
+                if(!ggpData.teamN3.some(m => m.phone === phone)) {
+                  ggpData.teamN3.push({ phone: phone, comm: 0, date: new Date().toLocaleDateString() });
+                  await updateDoc(ggpDoc.ref, { teamN3: ggpData.teamN3 });
+                }
+              }
+            }
+          }
+        }
+      }
+
+      localStorage.setItem('investRdcUser', JSON.stringify(u));
+      btn.disabled = false;
+      document.getElementById('welcome').classList.remove('hidden');
+    } catch (error) {
+      btn.disabled = false;
+      if (error.code === 'auth/email-already-in-use') {
+        alert('Ce numéro de téléphone est déjà enregistré. Veuillez vous connecter.');
+      } else {
+        alert("Erreur lors de l'inscription : " + error.message);
+      }
+    }
+  };
+
+  window.loginWithFirebase = async function(btn) {
+    const phone = document.getElementById('loginPhone').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    if(!phone || !pass) { alert('Veuillez remplir tous les champs.'); return; }
+
+    btn.disabled = true;
+    const fakeEmail = phone + "@investrdc.cd";
+
+    try {
+      await signInWithEmailAndPassword(auth, fakeEmail, pass);
+      
+      const userDocRef = doc(db, "users", phone);
+      const userSnap = await getDoc(userDocRef);
+
+      if(userSnap.exists()){
+        let u = userSnap.data();
+        if(u.isActive === false){
+          btn.disabled = false;
+          alert("Votre compte a été bloqué par l'administration.");
+          return;
+        }
+        localStorage.setItem('investRdcUser', JSON.stringify(u));
+      } else {
+        let u = { 
+          phone: phone, 
+          name: 'Membre ' + phone,
+          password: pass,
+          secretQuestion: '',
+          secretAnswer: '',
+          balance: 500, 
+          invested: 0, 
+          transactions: [{
+            type: 'Bonus de bienvenue',
+            amount: 500,
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            status: 'Approuvé'
+          }], 
+          purchasedPlans: [], 
+          activeInvestments: [], 
+          teamN1: [], 
+          teamN2: [], 
+          teamN3: [],
+          referredBy: '',
+          myRefCode: 'RDC-' + Math.floor(1000 + Math.random() * 9000),
+          isAdmin: false,
+          isActive: true
+        };
+        await setDoc(userDocRef, u);
+        localStorage.setItem('investRdcUser', JSON.stringify(u));
+      }
+
+      btn.disabled = false;
+      document.getElementById('welcome').classList.add('hidden');
+      enterDashboard();
+    } catch (error) {
+      btn.disabled = false;
+      alert('Identifiants incorrects ou compte introuvable.');
+    }
+  };
+
+  window.findSecretQuestion = async function(){
+    const phone = document.getElementById('forgotPhone').value.trim();
+    if(!phone) { alert('Veuillez entrer votre numéro de téléphone.'); return; }
+
+    try {
+      const userDocRef = doc(db, "users", phone);
+      const userSnap = await getDoc(userDocRef);
+
+      if(!userSnap.exists()) {
+        alert('Aucun compte enregistré avec ce numéro de téléphone.');
+        return;
+      }
+
+      let target = userSnap.data();
+      currentForgotPhone = phone;
+      document.getElementById('forgotDisplayQuestion').value = target.secretQuestion || 'Quel est le nom de votre première école ?';
+      document.getElementById('forgotStep1').classList.add('hidden');
+      document.getElementById('forgotStep2').classList.remove('hidden');
+    } catch(e) {
+      alert("Erreur lors de la recherche du compte.");
+    }
+  };
+
+  window.resetPasswordWithSecret = async function(){
+    const answer = document.getElementById('forgotAnswer').value.trim();
+    const newPass = document.getElementById('forgotNewPass').value;
+
+    if(!answer || !newPass || newPass.length < 6){
+      alert('Veuillez remplir tous les champs (nouveau mot de passe de 6 caractères min.).');
+      return;
+    }
+
+    try {
+      const userDocRef = doc(db, "users", currentForgotPhone);
+      const userSnap = await getDoc(userDocRef);
+
+      if(userSnap.exists()) {
+        let uData = userSnap.data();
+        if(uData.secretAnswer.toLowerCase() !== answer.toLowerCase()) {
+          alert('La réponse secrète est incorrecte.');
+          return;
+        }
+        uData.password = newPass;
+        await updateDoc(userDocRef, { password: newPass });
+        
+        alert('Mot de passe réinitialisé avec succès ! Vous pouvez maintenant vous connecter.');
+        document.getElementById('forgotStep1').classList.remove('hidden');
+        document.getElementById('forgotStep2').classList.add('hidden');
+        document.getElementById('forgotPhone').value = '';
+        document.getElementById('forgotAnswer').value = '';
+        document.getElementById('forgotNewPass').value = '';
+        showScreen('loginScreen');
+      } else {
+        alert('Erreur lors de la réinitialisation.');
+      }
+    } catch(e) {
+      alert("Erreur technique lors de la réinitialisation.");
+    }
+  };
+
+  window.enterDashboard = async function(){
+   let u = getUserData();
+   if(!u.phone) return;
+
+   try {
+     const docSnap = await getDoc(doc(db, "users", u.phone));
+     if(docSnap.exists()){
+       u = docSnap.data();
+       localStorage.setItem('investRdcUser', JSON.stringify(u));
+     }
+   } catch(e){}
+
+   if(u.isActive === false){
+     alert("Votre compte a été bloqué par l'administration.");
+     logout();
+     return;
+   }
+   document.getElementById('welcome').classList.add('hidden');
+   document.getElementById('loginScreen').classList.add('hidden');
+   document.getElementById('registerScreen').classList.add('hidden');
+   document.getElementById('forgotScreen').classList.add('hidden');
+   document.getElementById('dashboard').classList.add('active');
+   switchTab('accueil');
+   await syncApprovedDeposits();
+   checkDailyEarnings();
+   updateDashboardUI();
+  }
+
+  window.switchTab = function(tabName){
+   document.querySelectorAll('.main-view').forEach(v => v.classList.add('hidden'));
+
+   if(tabName === 'accueil'){
+    document.getElementById('viewAccueil').classList.remove('hidden');
+   } else if(tabName === 'equipe'){
+    document.getElementById('viewEquipe').classList.remove('hidden');
+   } else if(tabName === 'profil'){
+    document.getElementById('viewProfil').classList.remove('hidden');
+   } else if(tabName === 'planDetail'){
+    document.getElementById('viewPlanDetail').classList.remove('hidden');
+   } else if(tabName === 'deposit'){
+    document.getElementById('viewDeposit').classList.remove('hidden');
+   } else if(tabName === 'withdraw'){
+    document.getElementById('viewWithdraw').classList.remove('hidden');
+   }
+
+   document.querySelectorAll('.bottom button').forEach(b => b.classList.remove('active'));
+   if(tabName === 'accueil') document.getElementById('navAccueil').classList.add('active');
+   if(tabName === 'equipe') document.getElementById('navEquipe').classList.add('active');
+   if(tabName === 'profil') document.getElementById('navProfil').classList.add('active');
+
+   window.scrollTo({top:0, behavior:'smooth'});
+   if(['accueil', 'equipe', 'profil'].includes(tabName)){
+    syncApprovedDeposits().then(() => {
+      checkDailyEarnings();
+      updateDashboardUI();
+    });
+   }
+  }
+
+  window.updateDashboardUI = function(){
+   const u = getUserData();
+   if(u.isActive === false){
+     alert("Votre compte a été bloqué par l'administration.");
+     logout();
+     return;
+   }
+
+   document.getElementById('balance').textContent = u.balance.toLocaleString() + ' FC';
+   document.getElementById('totalInvested').textContent = u.invested.toLocaleString() + ' FC';
+   document.getElementById('topPhoneDisplay').textContent = u.phone || '--';
+   document.getElementById('profilePhone').textContent = u.phone || '--';
+   document.getElementById('profileRefCode').textContent = u.myRefCode || '--';
+   document.getElementById('profileReferredBy').textContent = u.referredBy ? u.referredBy : 'Aucun (Parrain direct non défini)';
+   document.getElementById('refCodeDisplay').value = u.myRefCode || '';
+   
+   const currentBaseURL = window.location.origin + window.location.pathname;
+   document.getElementById('refLinkDisplay').value = currentBaseURL + '?id=' + (u.myRefCode || '');
+   
+   const adminBtn = document.getElementById('adminLinkBtn');
+   if(adminBtn){
+     if(u.isAdmin === true){
+       adminBtn.classList.remove('hidden');
+     } else {
+       adminBtn.classList.add('hidden');
+     }
+   }
+
+   let sumN1 = u.teamN1.reduce((acc, cur) => acc + (cur.comm || 0), 0);
+   let sumN2 = u.teamN2.reduce((acc, cur) => acc + (cur.comm || 0), 0);
+   let sumN3 = u.teamN3.reduce((acc, cur) => acc + (cur.comm || 0), 0);
+
+   document.getElementById('countN1').textContent = u.teamN1.length;
+   document.getElementById('commN1').textContent = sumN1.toLocaleString() + ' FC';
+   document.getElementById('countN2').textContent = u.teamN2.length;
+   document.getElementById('commN2').textContent = sumN2.toLocaleString() + ' FC';
+   document.getElementById('countN3').textContent = u.teamN3.length;
+   document.getElementById('commN3').textContent = sumN3.toLocaleString() + ' FC';
+
+   let htmlN1 = '';
+   u.teamN1.forEach(m => {
+     let commVal = m.comm || 0;
+     htmlN1 += `<tr><td><b>${m.phone}</b></td><td>${m.date || '-'}</td><td style="text-align:right;" class="success">+${commVal.toLocaleString()} FC</td></tr>`;
+   });
+   document.getElementById('teamBodyN1').innerHTML = htmlN1 || `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>`;
+
+   let htmlN2 = '';
+   u.teamN2.forEach(m => {
+     let commVal = m.comm || 0;
+     htmlN2 += `<tr><td><b>${m.phone}</b></td><td>${m.date || '-'}</td><td style="text-align:right;" class="success">+${commVal.toLocaleString()} FC</td></tr>`;
+   });
+   document.getElementById('teamBodyN2').innerHTML = htmlN2 || `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>`;
+
+   let htmlN3 = '';
+   u.teamN3.forEach(m => {
+     let commVal = m.comm || 0;
+     htmlN3 += `<tr><td><b>${m.phone}</b></td><td>${m.date || '-'}</td><td style="text-align:right;" class="success">+${commVal.toLocaleString()} FC</td></tr>`;
+   });
+   document.getElementById('teamBodyN3').innerHTML = htmlN3 || `<tr><td colspan="3" style="text-align:center; color:var(--muted);">Aucun membre dans ce niveau.</td></tr>`;
+
+   let rechargesHtml = '';
+   let withdrawalsHtml = '';
+   let investmentsHtml = '';
+
+   u.transactions.forEach(tx => {
+    let statusBadge = '';
+    if(tx.status === 'En cours') {
+     statusBadge = '<span class="pending">En cours</span>';
+    } else if(tx.status === 'Approuvé' || tx.status === 'Succès') {
+     statusBadge = '<span class="success">Approuvé</span>';
+    } else if(tx.status === 'Refusé') {
+     statusBadge = '<span class="danger">Refusé</span>';
+    }
+
+    let refInfo = tx.ref ? `<br><small style="color:var(--muted)">Réf: ${tx.ref} ${tx.senderPhone ? '• Exp: ' + tx.senderPhone : ''}</small>` : '';
+
+    if(tx.type.includes('Dépôt') || tx.type.includes('Recharge') || tx.type.includes('Bonus') || tx.type.includes('Commission') || tx.type.includes('Admin')){
+     rechargesHtml += `<div class="clean-tx-card"><div class="clean-tx-info"><h4>${tx.type}</h4><small>${tx.date}</small>${refInfo}</div><div class="clean-tx-right"><span class="clean-tx-amount positive">+${tx.amount.toLocaleString()} FC</span>${statusBadge}</div></div>`;
+    } else if(tx.type.includes('Retrait')){
+     withdrawalsHtml += `<div class="clean-tx-card"><div class="clean-tx-info"><h4>${tx.type}</h4><small>${tx.date}</small>${refInfo}</div><div class="clean-tx-right"><span class="clean-tx-amount negative">-${tx.amount.toLocaleString()} FC</span>${statusBadge}</div></div>`;
+    }
+   });
+
+   u.activeInvestments.forEach((inv, index) => {
+    let nextPayout = inv.lastCheck + (24 * 60 * 60 * 1000);
+    let diff = Math.max(0, nextPayout - Date.now());
+    let h = Math.floor(diff / (1000 * 60 * 60));
+    let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    let s = Math.floor((diff % (1000 * 60)) / 1000);
+    let timeStr = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+    investmentsHtml += `<div class="clean-tx-card"><div class="clean-tx-info"><h4>${inv.name}</h4><small>Investissement : ${inv.amount.toLocaleString()} FC • Gain : ${inv.dailyGain.toLocaleString()} FC/j</small></div><div class="clean-tx-right"><span class="clean-tx-amount neutral" id="inv-timer-${index}">${timeStr}</span><small style="color:var(--muted); font-size:10px;">Prochain cycle</small></div></div>`;
+   });
+
+   document.getElementById('profileRecharges').innerHTML = rechargesHtml || 'Aucun dépôt ou bonus enregistré.';
+   document.getElementById('profileWithdrawals').innerHTML = withdrawalsHtml || 'Aucun retrait enregistré.';
+   document.getElementById('profileInvestments').innerHTML = investmentsHtml || 'Aucun actif actif pour le moment.';
+  }
+
+  window.openPlanDetail = function(name, amount, dailyGain, duration, returnRate, conditions, risks){
+   const u = getUserData();
+   if((name.includes('MicroEssentials® VIP 1') || name.includes('MicroEssentials® VIP 2')) && u.purchasedPlans.includes(name)){
+    alert("Attention : Ce produit de Niveau 1 ou 2 ne peut être acheté qu'une seule fois par utilisateur.");
+    return;
+   }
+
+   selectedPlanData = { name, amount, dailyGain };
+   document.getElementById('modalPlanName').textContent = name;
+   document.getElementById('modalPlanAmount').textContent = amount.toLocaleString() + ' FC';
+   document.getElementById('modalPlanDuration').textContent = duration;
+   document.getElementById('modalPlanReturn').textContent = returnRate;
+   document.getElementById('modalPlanConditions').textContent = conditions;
+   document.getElementById('modalPlanRisks').textContent = risks;
+   
+   switchTab('planDetail');
+  }
+
+  window.proceedToDeposit = function(){
+   document.getElementById('depPlanName').textContent = selectedPlanData.name;
+   document.getElementById('depAmount').textContent = selectedPlanData.amount.toLocaleString() + ' FC';
+   switchTab('deposit');
+  }
+
+  window.copyDepositNumber = function(){
+   navigator.clipboard.writeText('0965459468');
+   alert('Numéro de recharge de Landrine (0965459468) copié avec succès !');
+  }
+
+  window.confirmDeposit = async function(btn){
+   const senderPhone = document.getElementById('depSenderPhone').value.trim();
+   const txRef = document.getElementById('depTxRef').value.trim();
+
+   if(!senderPhone || !txRef){
+     alert('Veuillez renseigner votre numéro de téléphone (expéditeur) et la référence/ID de transaction.');
+     return;
+   }
+
+   btn.disabled = true;
+   let u = getUserData();
+   
+   if((selectedPlanData.name.includes('MicroEssentials® VIP 1') || selectedPlanData.name.includes('MicroEssentials® VIP 2'))){
+    if(!u.purchasedPlans.includes(selectedPlanData.name)){
+     u.purchasedPlans.push(selectedPlanData.name);
+    }
+   }
+
+   u.transactions.unshift({
+    type: 'Dépôt (' + selectedPlanData.name + ')',
+    amount: selectedPlanData.amount,
+    date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    status: 'En cours',
+    ref: txRef,
+    senderPhone: senderPhone,
+    planName: selectedPlanData.name,
+    dailyGain: selectedPlanData.dailyGain,
+    activated: false
+   });
+   
+   await saveUserData(u);
+   updateDashboardUI();
+   
+   btn.disabled = false;
+   alert("Demande de dépôt soumise avec succès ! Le statut est actuellement \"En cours\" en attendant la validation de l'administrateur.");
+   document.getElementById('depSenderPhone').value = '';
+   document.getElementById('depTxRef').value = '';
+   switchTab('accueil');
+  }
+
+  window.demoWithdraw = async function(btn){
+   const amount = Number(document.getElementById('withdrawAmount').value);
+   const phoneReceiver = document.getElementById('withdrawPhone').value.trim();
+   if(!amount || amount < 3500){
+    alert('Le montant minimum pour effectuer un retrait est de 3 500 FC.');
+    return;
+   }
+   if(!phoneReceiver){
+    alert('Veuillez entrer votre numéro Airtel de réception.');
+    return;
+   }
+   let u = getUserData();
+   if(u.balance < amount){
+    alert('Solde insuffisant pour honorer ce retrait.');
+    return;
+   }
+   
+   btn.disabled = true;
+   let fee = amount * 0.07;
+   let netAmount = amount - fee;
+
+   u.balance -= amount;
+   
+   u.transactions.unshift({
+    type: 'Retrait (' + document.getElementById('withdrawOperator').value + ' - Net : ' + Math.round(netAmount).toLocaleString() + ' FC)',
+    amount: amount,
+    date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+    status: 'En cours',
+    ref: phoneReceiver
+   });
+   await saveUserData(u);
+   updateDashboardUI();
+   
+   btn.disabled = false;
+   alert('Demande de retrait enregistrée avec succès ! En attente de validation admin.');
+   document.getElementById('withdrawAmount').value = '';
+   document.getElementById('withdrawPhone').value = '';
+   switchTab('accueil');
+  }
+
+  window.scrollToPlans = function(){
+   document.getElementById('plansSection').scrollIntoView({behavior:'smooth'});
+  }
+
+  window.copyRef = function(){
+   navigator.clipboard.writeText(document.getElementById('refCodeDisplay').value);
+   alert('Code de parrainage copié dans le presse-papier !');
+  }
+
+  window.copyLink = function(){
+   navigator.clipboard.writeText(document.getElementById('refLinkDisplay').value);
+   alert("Lien d'invitation copié dans le presse-papier !");
+  }
+
+  window.logout = async function(){
+   try {
+     await signOut(auth);
+   } catch (e) {
+     console.error(e);
+   }
+   localStorage.removeItem('investRdcUser');
+   document.getElementById('dashboard').classList.remove('active');
+   showScreen('loginScreen');
+  }
+
+  function checkDailyEarnings(){
+   let u = getUserData();
+   if(!u.phone) return;
+   let now = Date.now();
+   let updated = false;
+   
+   u.activeInvestments.forEach(inv => {
+    if(!inv.lastCheck) inv.lastCheck = inv.startTime;
+    let elapsedMs = now - inv.lastCheck;
+    let oneDayMs = 24 * 60 * 60 * 1000;
+    
+    if(elapsedMs >= oneDayMs){
+     let cycles = Math.floor(elapsedMs / oneDayMs);
+     let addedGain = cycles * inv.dailyGain;
+     u.balance += addedGain;
+     inv.lastCheck += (cycles * oneDayMs);
+     updated = true;
+     
+     u.transactions.unshift({
+      type: 'Gain quotidien (' + inv.name + ')',
+      amount: addedGain,
+      date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+      status: 'Approuvé'
+     });
+    }
+   });
+
+   if(updated) saveUserData(u);
+  }
+
+  setInterval(() => {
+   checkDailyEarnings();
+   let u = getUserData();
+   if(u.activeInvestments){
+    u.activeInvestments.forEach((inv, index) => {
+     let el = document.getElementById(`inv-timer-${index}`);
+     if(el){
+      let nextPayout = inv.lastCheck + (24 * 60 * 60 * 1000);
+      let diff = Math.max(0, nextPayout - Date.now());
+      let h = Math.floor(diff / (1000 * 60 * 60));
+      let m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      let s = Math.floor((diff % (1000 * 60)) / 1000);
+      el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+     }
+    });
+   }
+  }, 1000);
+
+  window.onload = function() {
+   const urlParams = new URLSearchParams(window.location.search);
+   const refId = urlParams.get('id') || urlParams.get('ref');
+   if(refId){
+    const regRefInput = document.getElementById('regRef');
+    if(regRefInput){
+     regRefInput.value = refId;
+     // Redirection automatique vers la page d'inscription si un lien de parrainage est utilisé
+     showScreen('registerScreen');
+    }
+   }
+   syncApprovedDeposits().then(() => {
+     checkDailyEarnings();
+   });
+  };
+</script>
+</body>
+</html>
